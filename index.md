@@ -137,7 +137,7 @@ This report was last updated on
 
 
 ```
-## [1] "2014-03-02 22:16:56 EST"
+## [1] "2014-03-03 00:54:06 EST"
 ```
 
 
@@ -155,9 +155,8 @@ R session information:
 ## [1] stats     graphics  grDevices utils     datasets  methods   base     
 ## 
 ## other attached packages:
-## [1] knitcitations_0.5-0    bibtex_0.3-6           slidifyLibraries_0.3.1
-## [4] knitrBootstrap_0.9.0   dplyr_0.1.1            ggplot2_0.9.3.1       
-## [7] knitr_1.5              slidify_0.4           
+## [1] dplyr_0.1.1         ggplot2_0.9.3.1     knitcitations_0.5-0
+## [4] bibtex_0.3-6        knitr_1.5           slidify_0.4        
 ## 
 ## loaded via a namespace (and not attached):
 ##  [1] assertthat_0.1     codetools_0.2-8    colorspace_1.2-4  
