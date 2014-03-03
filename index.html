@@ -1,0 +1,220 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>MPH TA sessions</title>
+    <link rel="stylesheet" href="libraries/frameworks/minimal/stylesheets/styles.css">
+    <link rel="stylesheet" href="libraries/highlighters/prettify/css/twitter-bootstrap.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+        <link rel=stylesheet href="http://fonts.googleapis.com/css?family=PT+Sans"></link>
+<link rel=stylesheet href="http://odyniec.net/articles/turning-lists-into-trees/css/tree.css"></link>
+
+    
+  </head>
+  <body>
+    <div class="wrapper">
+<header>
+  <h1>MPH TA sessions</h1>
+  <p></p>
+  <p class="view">
+    <a href="http://github.com/lcolladotor/mphtasessions">
+     View the Project on GitHub <small>lcolladotor/mphtasessions</small>
+    </a>
+  </p>
+  <ul class='buttons'>
+    <li><a href="https://github.com/lcolladotor/mphtasessions/zipball/gh-pages">
+      Download <strong>ZIP File</strong>
+    </a></li>
+    <li><a href="https://github.com/lcolladotor/mphtasessions/tarball/gh-pages">
+      Download <strong>TAR Ball</strong>
+    </a></li>
+    <li><a href="http://github.com/lcolladotor/mphtasessions">
+      Fork On <strong>GitHub</strong></a>
+    </li>
+  </ul>
+    <ol>
+    </ol>
+</header>
+
+      <section>
+        <h2>Intro</h2>
+<p>This is a quick report on the number of sessions (each 30 min long) with 2014 MPH capstone project TAs. Reservations are made using <a href="http://glimmer.rstudio.com/lcolladotor/MPHcapstoneTA/">http://glimmer.rstudio.com/lcolladotor/MPHcapstoneTA/</a> and can be cancelled with up to 24hrs notice. They can only be made up to a week before the actual meeting day. Furthermore, a student can only have one <strong>active</strong> reservation at a time. That is, a reservation for any session on the following 7 days. Finally, each TA offers 8 slots per week for students to sign up and the TA schedule is available under the <strong>TA info</strong> tab on the <a href="http://glimmer.rstudio.com/lcolladotor/MPHcapstoneTA/">site</a>. It is also dynamically changed when a student selects a day of the week in the <a href="http://glimmer.rstudio.com/lcolladotor/MPHcapstoneTA/">site</a> thus allowing the student to choose among the TAs that have sessions on the day the student is free.</p>
+
+<h2>By day of the year</h2>
+
+<p>The following figure shows the number of TA sessions per TA per day of the year. Note that the term officially started on January 21st (week 4 of the year) but there were no TA sessions that week. There are a couple of outliers, but most TAs had 1 or 2 sessions per day (if any).</p>
+
+<p><img src="assets/fig/fig1.png" alt="plot of chunk fig1"> </p>
+
+<h2>By TA and week number</h2>
+
+<p>Because each TA offers sessions during different weekdays, we can also look at the data per week of the year as shown below. For now the clear outlier is that TA <strong>C</strong> had a full week 9 with 8 slots used out of the 8 available. If you are a student, remember that there are plenty of other highly capable TAs available! It could also be that TA <strong>C</strong> chose the hours that are the most convenient for students.</p>
+
+<p><img src="assets/fig/fig2.png" alt="plot of chunk fig2"> </p>
+
+<h2>By day of the week</h2>
+
+<p>We can also explore the data to check which day of the week is has been the most busy so far. The next figure shows the number of TA sessions broken up by weekday. Wednesday is winning by a landslide so far. Although Mondays look pretty busy too.</p>
+
+<p><img src="assets/fig/fig3.png" alt="plot of chunk fig3"> </p>
+
+<h2>By week</h2>
+
+<p>Finally, we can check if the overall number of TA sessions has changed as the term has progressed. Beyond the dip in week 7, the number of sessions seems quite stable per week until week 8. This might change in the upcoming weeks as the deadline for the capstone project gets closer as we can see on weeks 9 and 10 (the current one and it&#39;s just beginning).</p>
+
+<p><img src="assets/fig/fig4.png" alt="plot of chunk fig4"> </p>
+
+<h2>References</h2>
+
+<p>Web document generated using <code>slidify</code> (<span class="showtooltip" title="Vaidyanathan R (2012). slidify: Generate reproducible html5 slides from R markdown. R package version 0.4."><a href="http://ramnathv.github.com/slidify/">Vaidyanathan, 2012</a></span>). Citations made with <code>knitcitations</code> (<span class="showtooltip" title="Boettiger C (2014). knitcitations: Citations for knitr markdown files. R package version 0.5-0."><a href="http://CRAN.R-project.org/package=knitcitations">Boettiger, 2014</a></span>). </p>
+
+<ul>
+<li>Carl Boettiger,   (2014) knitcitations: Citations for knitr markdown files.  <a href="http://CRAN.R-project.org/package=knitcitations">http://CRAN.R-project.org/package=knitcitations</a></li>
+<li>Ramnath Vaidyanathan,   (2012) slidify: Generate reproducible html5 slides from R markdown.  <a href="http://ramnathv.github.com/slidify/">http://ramnathv.github.com/slidify/</a></li>
+</ul>
+
+<h2>R code</h2>
+
+<pre><code class="r">## Load required libraries
+library(&quot;ggplot2&quot;)
+suppressMessages(library(&quot;dplyr&quot;))
+
+## Load and clean data
+load(&quot;reservations.Rdata&quot;)
+data &lt;- reservations[complete.cases(reservations$TA), 
+    ]
+data &lt;- subset(data, Student != &quot;Calendar fix&quot; &amp; Description != 
+    &quot;Therri will not hold office hours this day.&quot;)
+
+## Anonymize TAs
+data$TA &lt;- factor(data$TA)
+levels(data$TA) &lt;- toupper(letters[1:6])
+
+## Get the day of the actual TA sessions
+data$dDay &lt;- as.Date(data$desiredDate, format = &quot;%d-%m-%Y&quot;)
+
+## Summarise the data to get the number of sessions
+## per day on a given day
+sum &lt;- summarise(group_by(data, dDay, TA), number = n())
+## Calculate the week number (base 1). Used
+## http://stackoverflow.com/questions/15278128/calculate-the-week-number-0-53-in-year-with-r
+sum$weeknum &lt;- as.numeric(format(sum$dDay + 6, &quot;%U&quot;))
+## Plot by day of the year
+ggplot(sum, aes(x = dDay, y = number, fill = TA)) + 
+    geom_bar(stat = &quot;identity&quot;, position = &quot;dodge&quot;) + 
+    xlab(&quot;Day of the year&quot;) + ylab(&quot;Number of TA sessions&quot;)
+
+## Plot by week of the year
+sum &lt;- regroup(sum, list(quote(weeknum)))
+tabyweek &lt;- summarise(group_by(sum, weeknum, TA), number = sum(number))
+ggplot(tabyweek, aes(x = weeknum, y = number, fill = TA)) + 
+    geom_bar(stat = &quot;identity&quot;, position = &quot;dodge&quot;) + 
+    xlab(&quot;Week of the year (base 1)&quot;) + ylab(&quot;Number of TA sessions&quot;)
+
+## Plot by weekday
+sum$weekday &lt;- weekdays(sum$dDay)
+tmp &lt;- regroup(sum, list(quote(weekday)))
+byweekday &lt;- summarise(tmp, number = sum(number))
+byweekday$weekday &lt;- factor(byweekday$weekday, levels = c(&quot;Monday&quot;, 
+    &quot;Tuesday&quot;, &quot;Wednesday&quot;, &quot;Thursday&quot;, &quot;Friday&quot;))
+ggplot(byweekday, aes(x = weekday, y = number)) + geom_bar(stat = &quot;identity&quot;) + 
+    xlab(&quot;Day of the week&quot;) + ylab(&quot;Number of TA sessions&quot;)
+
+## Plot by week of the year ignoring TA
+byweek &lt;- summarise(sum, number = sum(number))
+ggplot(byweek, aes(x = weeknum, y = number)) + geom_point() + 
+    geom_line() + xlab(&quot;Week of the year (base 1)&quot;) + 
+    ylab(&quot;Number of TA sessions&quot;) + scale_y_continuous(breaks = seq(0, 
+    13, by = 1), limits = c(0, 13))
+
+</code></pre>
+
+<h2>Reproducibility</h2>
+
+<p>This report was last updated on</p>
+
+<pre><code>## [1] &quot;2014-03-02 22:16:56 EST&quot;
+</code></pre>
+
+<p>R session information:</p>
+
+<pre><code>## R version 3.0.2 (2013-09-25)
+## Platform: x86_64-apple-darwin10.8.0 (64-bit)
+## 
+## locale:
+## [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
+## 
+## attached base packages:
+## [1] stats     graphics  grDevices utils     datasets  methods   base     
+## 
+## other attached packages:
+## [1] knitcitations_0.5-0    bibtex_0.3-6           slidifyLibraries_0.3.1
+## [4] knitrBootstrap_0.9.0   dplyr_0.1.1            ggplot2_0.9.3.1       
+## [7] knitr_1.5              slidify_0.4           
+## 
+## loaded via a namespace (and not attached):
+##  [1] assertthat_0.1     codetools_0.2-8    colorspace_1.2-4  
+##  [4] dichromat_2.0-0    digest_0.6.4       evaluate_0.5.1    
+##  [7] formatR_0.10       grid_3.0.2         gtable_0.1.2      
+## [10] httr_0.2           labeling_0.2       markdown_0.6.4    
+## [13] MASS_7.3-29        munsell_0.4.2      plyr_1.8          
+## [16] proto_0.3-10       RColorBrewer_1.0-5 Rcpp_0.11.0       
+## [19] RCurl_1.95-4.1     reshape2_1.2.2     scales_0.2.3      
+## [22] stringr_0.6.2      tools_3.0.2        whisker_0.3-2     
+## [25] XML_3.95-0.2       xtable_1.7-1       yaml_2.1.10
+</code></pre>
+
+<div id='disqus_thread'></div>
+
+      </section>
+      <footer>
+        <p>Maintained by <a href="http://github.com/lcolladotor">
+          L. Collado-Torres
+        </a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by 
+          <a href="https://github.com/orderedlist">orderedlist</a></small>
+        </p>
+      </footer>    </div>
+    <script src="libraries/frameworks/minimal/javascripts/scale.fix.js"></script>
+  </body>
+  <!-- Load Javascripts for Widgets -->
+  
+  <script type="text/javascript">
+    var disqus_shortname = 'mphtasessions';
+    (function() {
+      var dsq = document.createElement('script'); 
+      dsq.type = 'text/javascript'; 
+      dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+  
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  
+    ga('create', 'UA-45299226-1', 'lcolladotor.io');
+    ga('send', 'pageview');
+  
+  </script>
+  <!-- Google Prettify -->
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/prettify/188.0.0/prettify.js"></script>
+  <script src='libraries/highlighters/prettify/js/lang-r.js'></script>
+  <script>
+    var pres = document.getElementsByTagName("pre");
+    for (var i=0; i < pres.length; ++i) {
+      pres[i].className = "prettyprint linenums";
+    }
+    prettyPrint();
+  </script>
+  <!-- End Google Prettify --> 
+  </html>

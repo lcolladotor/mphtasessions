@@ -1,0 +1,167 @@
+---
+title       : MPH TA sessions
+author      : L. Collado-Torres
+framework   : minimal
+highlighter : prettify
+hitheme     : twitter-bootstrap
+mode        : selfcontained
+github      : {user: lcolladotor, repo: mphtasessions, branch: gh-pages}
+widgets     : [disqus, ganalytics]
+assets:
+  css: 
+    - "http://fonts.googleapis.com/css?family=PT+Sans"
+    - "http://odyniec.net/articles/turning-lists-into-trees/css/tree.css"
+---
+
+```{r setup, echo = F, cache = F}
+require("knitr")
+opts_chunk$set(tidy=TRUE, width=50, echo=FALSE, tidy.opts=list(width.cutoff=50))
+```
+
+
+```{r "citations", echo=FALSE, message=FALSE}
+## Load knitcitations with a clean bibliography
+library("knitcitations")
+cleanbib()
+cite_options(tooltip=TRUE)
+
+## I made my own citing function since citep() doesn't work like I want to with
+## urls that are not really pages themselves like part of a GitHub repo.
+mycitep <- function(x, short=NULL, year=substr(date(), 21, 24), tooltip=TRUE) {
+	res <- tmp <- citep(x)
+	if(!is.null(short)) {
+		res <- gsub("></a>", paste0(">", short, "</a>"), tmp)
+	}		
+	if(tooltip) {
+		res <- gsub("\\?\\?\\?\\?", year, res)
+	}
+	res <- gsub("span> ", "span>", res)
+	res
+}
+
+## Here's an example
+# mycitep("https://github.com/lcolladotor/lcollado753", "Collado, 2013")
+```
+```{r bibsetup, echo=FALSE, message=FALSE, warning=FALSE}
+write.bibtex(c("knitcitations" = citation("knitcitations"), "slidify" = citation("slidify")), file = "pkgs.bib")
+bib <- read.bibtex("pkgs.bib")
+```
+
+
+## Intro
+
+This is a quick report on the number of sessions (each 30 min long) with 2014 MPH capstone project TAs. Reservations are made using http://glimmer.rstudio.com/lcolladotor/MPHcapstoneTA/ and can be cancelled with up to 24hrs notice. They can only be made up to a week before the actual meeting day. Furthermore, a student can only have one __active__ reservation at a time. That is, a reservation for any session on the following 7 days. Finally, each TA offers 8 slots per week for students to sign up and the TA schedule is available under the __TA info__ tab on the [site](http://glimmer.rstudio.com/lcolladotor/MPHcapstoneTA/). It is also dynamically changed when a student selects a day of the week in the [site](http://glimmer.rstudio.com/lcolladotor/MPHcapstoneTA/) thus allowing the student to choose among the TAs that have sessions on the day the student is free.
+
+```{r load}
+## Load required libraries
+library("ggplot2")
+suppressMessages(library("dplyr"))
+
+## Load and clean data
+load("reservations.Rdata")
+data <- reservations[complete.cases(reservations$TA), ]
+data <- subset(data, Student != "Calendar fix" 
+	& Description != "Therri will not hold office hours this day.")
+
+## Anonymize TAs
+data$TA <- factor(data$TA)
+levels(data$TA) <- toupper(letters[1:6])
+
+## Get the day of the actual TA sessions
+data$dDay <- as.Date(data$desiredDate, format="%d-%m-%Y")
+
+## Summarise the data to get the number of sessions per day on a given day
+sum <- summarise(group_by(data, dDay, TA), "number"=n())
+## Calculate the week number (base 1). Used http://stackoverflow.com/questions/15278128/calculate-the-week-number-0-53-in-year-with-r
+sum$weeknum <- as.numeric( format(sum$dDay + 6, "%U"))
+```
+
+## By day of the year
+
+The following figure shows the number of TA sessions per TA per day of the year. Note that the term officially started on January 21st (week 4 of the year) but there were no TA sessions that week. There are a couple of outliers, but most TAs had 1 or 2 sessions per day (if any).
+
+```{r "fig1"}
+## Plot by day of the year
+ggplot(sum, aes(x=dDay, y=number, fill=TA)) + geom_bar(stat="identity", position="dodge") + xlab("Day of the year") + ylab("Number of TA sessions")
+
+```
+
+## By TA and week number
+
+Because each TA offers sessions during different weekdays, we can also look at the data per week of the year as shown below. For now the clear outlier is that TA __C__ had a full week 9 with 8 slots used out of the 8 available. If you are a student, remember that there are plenty of other highly capable TAs available! It could also be that TA __C__ chose the hours that are the most convenient for students.
+
+```{r "fig2"}
+## Plot by week of the year
+sum <- regroup(sum, list(quote(weeknum)))
+tabyweek <- summarise(group_by(sum, weeknum, TA), number=sum(number))
+ggplot(tabyweek, aes(x=weeknum, y=number, fill=TA)) + geom_bar(stat="identity", position="dodge") + xlab("Week of the year (base 1)") + ylab("Number of TA sessions")
+
+```
+
+## By day of the week
+
+We can also explore the data to check which day of the week is has been the most busy so far. The next figure shows the number of TA sessions broken up by weekday. Wednesday is winning by a landslide so far. Although Mondays look pretty busy too.
+
+```{r "fig3"}
+## Plot by weekday
+sum$weekday <- weekdays(sum$dDay)
+tmp <- regroup(sum, list(quote(weekday)))
+byweekday <- summarise(tmp, number=sum(number))
+byweekday$weekday <- factor(byweekday$weekday, levels=c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday"))
+ggplot(byweekday, aes(x=weekday, y=number)) + geom_bar(stat="identity") + xlab("Day of the week") + ylab("Number of TA sessions")
+
+```
+
+## By week
+
+Finally, we can check if the overall number of TA sessions has changed as the term has progressed. Beyond the dip in week 7, the number of sessions seems quite stable per week until week 8. This might change in the upcoming weeks as the deadline for the capstone project gets closer as we can see on weeks 9 and 10 (the current one and it's just beginning).
+
+
+```{r "fig4"}
+## Plot by week of the year ignoring TA
+byweek <- summarise(sum, number=sum(number))
+ggplot(byweek, aes(x=weeknum, y=number)) + geom_point() + geom_line() + xlab("Week of the year (base 1)") + ylab("Number of TA sessions") + scale_y_continuous(breaks=seq(0, 13, by=1), limits=c(0, 13))
+
+```
+
+
+## References
+
+Web document generated using `slidify` `r mycitep(bib[["slidify"]])`. Citations made with `knitcitations` `r mycitep(bib[["knitcitations"]], "Boettiger, 2013")`. 
+
+
+```{r bibliography, results='asis', echo=FALSE, cache=FALSE}
+## Print bibliography
+bibliography()
+```
+
+
+
+## R code
+
+```{r code, echo=TRUE, eval=FALSE}
+<<load>>
+<<fig1>>
+<<fig2>>
+<<fig3>>
+<<fig4>>
+```
+
+## Reproducibility
+
+This report was last updated on
+
+```{r "date"}
+Sys.time()
+```
+
+R session information:
+
+```{r "reprod"}
+sessionInfo()
+```
+
+
+<div id='disqus_thread'></div>
+
+
