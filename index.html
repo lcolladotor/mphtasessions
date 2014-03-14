@@ -52,7 +52,7 @@
 
 <h2>By TA and week number</h2>
 
-<p>Because each TA offers sessions during different weekdays, we can also look at the data per week of the year as shown below. For now the clear outlier is that TA <strong>C</strong> had a full week 9 with 8 slots used out of the 8 available. If you are a student, remember that there are plenty of other highly capable TAs available! It could also be that TA <strong>C</strong> chose the hours that are the most convenient for students.</p>
+<p>Because each TA offers sessions during different weekdays, we can also look at the data per week of the year as shown below. For now the clear outlier is that TA <strong>C</strong> had a full week 9 with 8 slots used out of the 8 available. If you are a student, remember that there are plenty of other highly capable TAs available! It could also be that TA <strong>C</strong> chose the hours that are the most convenient for students. TA <strong>F</strong> has been quite busy as of late as well.</p>
 
 <p><img src="assets/fig/fig2.png" alt="plot of chunk fig2"> </p>
 
@@ -64,7 +64,7 @@
 
 <h2>By week</h2>
 
-<p>Finally, we can check if the overall number of TA sessions has changed as the term has progressed. Beyond the dip in week 7, the number of sessions seems quite stable per week until week 8. This might change in the upcoming weeks as the deadline for the capstone project gets closer as we can see on weeks 9 and 10 (the current one and it&#39;s just beginning).</p>
+<p>Finally, we can check if the overall number of TA sessions has changed as the term has progressed. Beyond the dip in week 7, the number of sessions seems quite stable per week until week 8. This might change in the upcoming weeks as the deadline for the capstone project gets closer as we can see on weeks 9 and 10. Week 11 might have been less busy because it was finals week and just before spring break.</p>
 
 <p><img src="assets/fig/fig4.png" alt="plot of chunk fig4"> </p>
 
@@ -87,8 +87,10 @@ suppressMessages(library(&quot;dplyr&quot;))
 load(&quot;reservations.Rdata&quot;)
 data &lt;- reservations[complete.cases(reservations$TA), 
     ]
-data &lt;- subset(data, Student != &quot;Calendar fix&quot; &amp; Description != 
-    &quot;Therri will not hold office hours this day.&quot;)
+data &lt;- subset(data, Student != &quot;Calendar fix&quot; &amp; !Description %in% 
+    c(&quot;Therri will not hold office hours this day.&quot;, 
+        &quot;Leo will not hold office hours this day.&quot;, 
+        &quot;Meeting with department chair&quot;))
 
 ## Anonymize TAs
 data$TA &lt;- factor(data$TA)
@@ -129,7 +131,7 @@ byweek &lt;- summarise(sum, number = sum(number))
 ggplot(byweek, aes(x = weeknum, y = number)) + geom_point() + 
     geom_line() + xlab(&quot;Week of the year (base 1)&quot;) + 
     ylab(&quot;Number of TA sessions&quot;) + scale_y_continuous(breaks = seq(0, 
-    13, by = 1), limits = c(0, 13))
+    15, by = 1), limits = c(0, 15))
 
 </code></pre>
 
@@ -137,7 +139,7 @@ ggplot(byweek, aes(x = weeknum, y = number)) + geom_point() +
 
 <p>This report was last updated on</p>
 
-<pre><code>## [1] &quot;2014-03-03 00:54:06 EST&quot;
+<pre><code>## [1] &quot;2014-03-14 10:40:46 EDT&quot;
 </code></pre>
 
 <p>R session information:</p>
@@ -152,7 +154,7 @@ ggplot(byweek, aes(x = weeknum, y = number)) + geom_point() +
 ## [1] stats     graphics  grDevices utils     datasets  methods   base     
 ## 
 ## other attached packages:
-## [1] dplyr_0.1.1         ggplot2_0.9.3.1     knitcitations_0.5-0
+## [1] knitcitations_0.5-0 ggplot2_0.9.3.1     dplyr_0.1.1        
 ## [4] bibtex_0.3-6        knitr_1.5           slidify_0.4        
 ## 
 ## loaded via a namespace (and not attached):
@@ -166,6 +168,8 @@ ggplot(byweek, aes(x = weeknum, y = number)) + geom_point() +
 ## [22] stringr_0.6.2      tools_3.0.2        whisker_0.3-2     
 ## [25] XML_3.95-0.2       xtable_1.7-1       yaml_2.1.10
 </code></pre>
+
+<p>Generate report:</p>
 
 <div id='disqus_thread'></div>
 
