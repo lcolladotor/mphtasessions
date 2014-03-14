@@ -165,7 +165,7 @@ sessionInfo()
 
 Generate report:
 
-```{r, eval=FALSE}
+```{r, eval=FALSE, echo=TRUE}
 library("slidify")
 slidify("index.Rmd")
 ```

@@ -139,7 +139,7 @@ ggplot(byweek, aes(x = weeknum, y = number)) + geom_point() +
 
 <p>This report was last updated on</p>
 
-<pre><code>## [1] &quot;2014-03-14 10:40:46 EDT&quot;
+<pre><code>## [1] &quot;2014-03-14 10:54:50 EDT&quot;
 </code></pre>
 
 <p>R session information:</p>
@@ -170,6 +170,10 @@ ggplot(byweek, aes(x = weeknum, y = number)) + geom_point() +
 </code></pre>
 
 <p>Generate report:</p>
+
+<pre><code class="r">library(&quot;slidify&quot;)
+slidify(&quot;index.Rmd&quot;)
+</code></pre>
 
 <div id='disqus_thread'></div>
 

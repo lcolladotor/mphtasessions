@@ -139,7 +139,7 @@ This report was last updated on
 
 
 ```
-## [1] "2014-03-14 10:40:46 EDT"
+## [1] "2014-03-14 10:54:50 EDT"
 ```
 
 
@@ -176,6 +176,10 @@ R session information:
 Generate report:
 
 
+```r
+library("slidify")
+slidify("index.Rmd")
+```
 
 
 
