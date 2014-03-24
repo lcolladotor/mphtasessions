@@ -128,7 +128,7 @@ byweek <- summarise(sum, number = sum(number))
 ggplot(byweek, aes(x = weeknum, y = number)) + geom_point() + 
     geom_line() + xlab("Week of the year (base 1)") + 
     ylab("Number of TA sessions") + scale_y_continuous(breaks = seq(0, 
-    15, by = 1), limits = c(0, 15))
+    18, by = 1), limits = c(0, 18))
 
 ```
 
@@ -139,7 +139,7 @@ This report was last updated on
 
 
 ```
-## [1] "2014-03-24 11:41:59 EDT"
+## [1] "2014-03-24 17:16:36 EDT"
 ```
 
 
@@ -159,20 +159,17 @@ R session information:
 ## other attached packages:
 ## [1] dplyr_0.1.1         ggplot2_0.9.3.1     knitcitations_0.5-0
 ## [4] bibtex_0.3-6        knitr_1.5           slidify_0.4        
-## [7] sendmailR_1.1-2     base64enc_0.1-1     shiny_0.9.1        
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] assertthat_0.1     bitops_1.0-6       caTools_1.16      
-##  [4] codetools_0.2-8    colorspace_1.2-4   dichromat_2.0-0   
-##  [7] digest_0.6.4       evaluate_0.5.1     formatR_0.10      
-## [10] grid_3.0.2         gtable_0.1.2       httpuv_1.2.2      
-## [13] httr_0.2           labeling_0.2       markdown_0.6.4    
-## [16] MASS_7.3-29        munsell_0.4.2      plyr_1.8          
-## [19] proto_0.3-10       RColorBrewer_1.0-5 Rcpp_0.11.0       
-## [22] RCurl_1.95-4.1     reshape2_1.2.2     RJSONIO_1.0-3     
-## [25] scales_0.2.3       stringr_0.6.2      tools_3.0.2       
-## [28] whisker_0.3-2      XML_3.95-0.2       xtable_1.7-1      
-## [31] yaml_2.1.10
+##  [1] assertthat_0.1     codetools_0.2-8    colorspace_1.2-4  
+##  [4] dichromat_2.0-0    digest_0.6.4       evaluate_0.5.1    
+##  [7] formatR_0.10       grid_3.0.2         gtable_0.1.2      
+## [10] httr_0.2           labeling_0.2       markdown_0.6.4    
+## [13] MASS_7.3-29        munsell_0.4.2      plyr_1.8          
+## [16] proto_0.3-10       RColorBrewer_1.0-5 Rcpp_0.11.0       
+## [19] RCurl_1.95-4.1     reshape2_1.2.2     scales_0.2.3      
+## [22] stringr_0.6.2      tools_3.0.2        whisker_0.3-2     
+## [25] XML_3.95-0.2       xtable_1.7-1       yaml_2.1.10
 ```
 
 
