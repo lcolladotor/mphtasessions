@@ -53,7 +53,7 @@ We can also explore the data to check which day of the week is has been the most
 
 ## By week
 
-Finally, we can check if the overall number of TA sessions has changed as the term has progressed. Beyond the dip in week 7, the number of sessions seems quite stable per week until week 8. This might change in the upcoming weeks as the deadline for the capstone project gets closer as we can see on weeks 9 and 10. Week 11 might have been less busy because it was finals week and just before spring break.
+Finally, we can check if the overall number of TA sessions has changed as the term has progressed. Beyond the dip in week 7, the number of sessions seems quite stable per week until week 8. This might change in the upcoming weeks as the deadline for the capstone project gets closer as we can see on weeks 9 and 10. Week 11 might have been less busy because it was finals week and just before spring break. Week 13 (1st one for term 4) is just beginning and has broken all the records so far!
 
 
 ![plot of chunk fig4](assets/fig/fig4.png) 
@@ -139,7 +139,7 @@ This report was last updated on
 
 
 ```
-## [1] "2014-03-14 10:54:50 EDT"
+## [1] "2014-03-24 11:41:59 EDT"
 ```
 
 
@@ -157,19 +157,22 @@ R session information:
 ## [1] stats     graphics  grDevices utils     datasets  methods   base     
 ## 
 ## other attached packages:
-## [1] knitcitations_0.5-0 ggplot2_0.9.3.1     dplyr_0.1.1        
+## [1] dplyr_0.1.1         ggplot2_0.9.3.1     knitcitations_0.5-0
 ## [4] bibtex_0.3-6        knitr_1.5           slidify_0.4        
+## [7] sendmailR_1.1-2     base64enc_0.1-1     shiny_0.9.1        
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] assertthat_0.1     codetools_0.2-8    colorspace_1.2-4  
-##  [4] dichromat_2.0-0    digest_0.6.4       evaluate_0.5.1    
-##  [7] formatR_0.10       grid_3.0.2         gtable_0.1.2      
-## [10] httr_0.2           labeling_0.2       markdown_0.6.4    
-## [13] MASS_7.3-29        munsell_0.4.2      plyr_1.8          
-## [16] proto_0.3-10       RColorBrewer_1.0-5 Rcpp_0.11.0       
-## [19] RCurl_1.95-4.1     reshape2_1.2.2     scales_0.2.3      
-## [22] stringr_0.6.2      tools_3.0.2        whisker_0.3-2     
-## [25] XML_3.95-0.2       xtable_1.7-1       yaml_2.1.10
+##  [1] assertthat_0.1     bitops_1.0-6       caTools_1.16      
+##  [4] codetools_0.2-8    colorspace_1.2-4   dichromat_2.0-0   
+##  [7] digest_0.6.4       evaluate_0.5.1     formatR_0.10      
+## [10] grid_3.0.2         gtable_0.1.2       httpuv_1.2.2      
+## [13] httr_0.2           labeling_0.2       markdown_0.6.4    
+## [16] MASS_7.3-29        munsell_0.4.2      plyr_1.8          
+## [19] proto_0.3-10       RColorBrewer_1.0-5 Rcpp_0.11.0       
+## [22] RCurl_1.95-4.1     reshape2_1.2.2     RJSONIO_1.0-3     
+## [25] scales_0.2.3       stringr_0.6.2      tools_3.0.2       
+## [28] whisker_0.3-2      XML_3.95-0.2       xtable_1.7-1      
+## [31] yaml_2.1.10
 ```
 
 

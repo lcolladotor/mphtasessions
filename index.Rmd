@@ -116,7 +116,7 @@ ggplot(byweekday, aes(x=weekday, y=number)) + geom_bar(stat="identity") + xlab("
 
 ## By week
 
-Finally, we can check if the overall number of TA sessions has changed as the term has progressed. Beyond the dip in week 7, the number of sessions seems quite stable per week until week 8. This might change in the upcoming weeks as the deadline for the capstone project gets closer as we can see on weeks 9 and 10. Week 11 might have been less busy because it was finals week and just before spring break.
+Finally, we can check if the overall number of TA sessions has changed as the term has progressed. Beyond the dip in week 7, the number of sessions seems quite stable per week until week 8. This might change in the upcoming weeks as the deadline for the capstone project gets closer as we can see on weeks 9 and 10. Week 11 might have been less busy because it was finals week and just before spring break. Week 13 (1st one for term 4) is just beginning and has broken all the records so far!
 
 
 ```{r "fig4"}
