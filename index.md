@@ -128,7 +128,8 @@ byweek <- summarise(sum, number = sum(number))
 ggplot(byweek, aes(x = weeknum, y = number)) + geom_point() + 
     geom_line() + xlab("Week of the year (base 1)") + 
     ylab("Number of TA sessions") + scale_y_continuous(breaks = seq(0, 
-    18, by = 1), limits = c(0, 18))
+    max(byweek$number) + 1, by = 1), limits = c(0, 
+    max(byweek$number) + 1))
 
 ```
 
@@ -139,7 +140,7 @@ This report was last updated on
 
 
 ```
-## [1] "2014-03-24 17:16:36 EDT"
+## [1] "2014-03-26 15:53:14 EDT"
 ```
 
 
@@ -178,6 +179,7 @@ Generate report:
 
 ```r
 library("slidify")
+system("rm -fr .cache")
 slidify("index.Rmd")
 ```
 
