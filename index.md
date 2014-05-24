@@ -14,9 +14,6 @@ assets:
 ---
 
 
-```
-## Loading required package: knitr
-```
 
 
 
@@ -136,7 +133,7 @@ This report was last updated on
 
 
 ```
-## [1] "2014-05-24 10:40:28 EDT"
+## [1] "2014-05-24 10:41:55 EDT"
 ```
 
 R session information:
