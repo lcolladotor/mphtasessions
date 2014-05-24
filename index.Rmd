@@ -63,7 +63,11 @@ data <- reservations[complete.cases(reservations$TA), ]
 data <- subset(data, Student != "Calendar fix" 
 	& !Description %in% c("Therri will not hold office hours this day.",
 	"Leo will not hold office hours this day.",
-	"Meeting with department chair"))
+	"Meeting with department chair",
+    "not available at this time today",
+    "Therri will not hold office hours at this time.",
+    "Will not be available to meet with students on Monday at this time.",
+    "Leo will be out of town"))
 
 ## Anonymize TAs
 data$TA <- factor(data$TA)
@@ -73,7 +77,7 @@ levels(data$TA) <- toupper(letters[1:6])
 data$dDay <- as.Date(data$desiredDate, format="%d-%m-%Y")
 
 ## Summarise the data to get the number of sessions per day on a given day
-sum <- summarise(group_by(data, dDay, TA), "number"=n())
+sum <- summarise(group_by(data[, -c(8, 11, 12)], dDay, TA), "number"=n())
 ## Calculate the week number (base 1). Used http://stackoverflow.com/questions/15278128/calculate-the-week-number-0-53-in-year-with-r
 sum$weeknum <- as.numeric( format(sum$dDay + 6, "%U"))
 ```
@@ -90,7 +94,7 @@ ggplot(sum, aes(x=dDay, y=number, fill=TA)) + geom_bar(stat="identity", position
 
 ## By TA and week number
 
-Because each TA offers sessions during different weekdays, we can also look at the data per week of the year as shown below. For now the clear outlier is that TA __C__ had a full week 9 with 8 slots used out of the 8 available. If you are a student, remember that there are plenty of other highly capable TAs available! It could also be that TA __C__ chose the hours that are the most convenient for students. TA __F__ has been quite busy as of late as well.
+Because each TA offers sessions during different weekdays, we can also look at the data per week of the year as shown below. TA __C__ had 4 full weeks with 8 slots used out of the 8 available. If you are a student, remember that there are plenty of other highly capable TAs available! It could also be that TA __C__ chose the hours that are the most convenient for students. TA __F__ has was quite busy as well followed by TA __B__.
 
 ```{r "fig2"}
 ## Plot by week of the year
@@ -102,7 +106,7 @@ ggplot(tabyweek, aes(x=weeknum, y=number, fill=TA)) + geom_bar(stat="identity", 
 
 ## By day of the week
 
-We can also explore the data to check which day of the week is has been the most busy so far. The next figure shows the number of TA sessions broken up by weekday. Wednesday is winning by a landslide so far. Although Mondays look pretty busy too.
+We can also explore the data to check which day of the week is has been the most busy so far. The next figure shows the number of TA sessions broken up by weekday. Wednesday and Monday were the most popular options.
 
 ```{r "fig3"}
 ## Plot by weekday
@@ -116,7 +120,7 @@ ggplot(byweekday, aes(x=weekday, y=number)) + geom_bar(stat="identity") + xlab("
 
 ## By week
 
-Finally, we can check if the overall number of TA sessions has changed as the term has progressed. Beyond the dip in week 7, the number of sessions seems quite stable per week until week 8. This might change in the upcoming weeks as the deadline for the capstone project gets closer as we can see on weeks 9 and 10. Week 11 might have been less busy because it was finals week and just before spring break. Week 13 (1st one for term 4) is just beginning and has broken all the records so far!
+Finally, we can check if the overall number of TA sessions has changed as the term has progressed. We can see that weeks 13 to 17 were the most intense ones.
 
 
 ```{r "fig4"}

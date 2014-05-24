@@ -14,9 +14,9 @@ assets:
 ---
 
 
-
-
-
+```
+## Loading required package: knitr
+```
 
 
 
@@ -29,46 +29,40 @@ This is a quick report on the number of sessions (each 30 min long) with 2014 MP
 
 
 
-
 ## By day of the year
 
 The following figure shows the number of TA sessions per TA per day of the year. Note that the term officially started on January 21st (week 4 of the year) but there were no TA sessions that week. There are a couple of outliers, but most TAs had 1 or 2 sessions per day (if any).
 
 ![plot of chunk fig1](assets/fig/fig1.png) 
 
-
 ## By TA and week number
 
-Because each TA offers sessions during different weekdays, we can also look at the data per week of the year as shown below. For now the clear outlier is that TA __C__ had a full week 9 with 8 slots used out of the 8 available. If you are a student, remember that there are plenty of other highly capable TAs available! It could also be that TA __C__ chose the hours that are the most convenient for students. TA __F__ has been quite busy as of late as well.
+Because each TA offers sessions during different weekdays, we can also look at the data per week of the year as shown below. TA __C__ had 4 full weeks with 8 slots used out of the 8 available. If you are a student, remember that there are plenty of other highly capable TAs available! It could also be that TA __C__ chose the hours that are the most convenient for students. TA __F__ has was quite busy as well followed by TA __B__.
 
 ![plot of chunk fig2](assets/fig/fig2.png) 
 
-
 ## By day of the week
 
-We can also explore the data to check which day of the week is has been the most busy so far. The next figure shows the number of TA sessions broken up by weekday. Wednesday is winning by a landslide so far. Although Mondays look pretty busy too.
+We can also explore the data to check which day of the week is has been the most busy so far. The next figure shows the number of TA sessions broken up by weekday. Wednesday and Monday were the most popular options.
 
 ![plot of chunk fig3](assets/fig/fig3.png) 
 
-
 ## By week
 
-Finally, we can check if the overall number of TA sessions has changed as the term has progressed. Beyond the dip in week 7, the number of sessions seems quite stable per week until week 8. This might change in the upcoming weeks as the deadline for the capstone project gets closer as we can see on weeks 9 and 10. Week 11 might have been less busy because it was finals week and just before spring break. Week 13 (1st one for term 4) is just beginning and has broken all the records so far!
+Finally, we can check if the overall number of TA sessions has changed as the term has progressed. We can see that weeks 13 to 17 were the most intense ones.
 
 
 ![plot of chunk fig4](assets/fig/fig4.png) 
 
 
-
 ## References
 
-Web document generated using `slidify` (<span class="showtooltip" title="Vaidyanathan R (2012). slidify: Generate reproducible html5 slides from R markdown. R package version 0.4."><a href="http://ramnathv.github.com/slidify/">Vaidyanathan, 2012</a></span>). Citations made with `knitcitations` (<span class="showtooltip" title="Boettiger C (2014). knitcitations: Citations for knitr markdown files. R package version 0.5-0."><a href="http://CRAN.R-project.org/package=knitcitations">Boettiger, 2014</a></span>). 
+Web document generated using `slidify` (<span class="showtooltip" title="Vaidyanathan R (2012). slidify: Generate reproducible html5 slides from R markdown. R package version 0.4.  </p>"><a href="http://ramnathv.github.com/slidify/">Vaidyanathan, 2012</a></span>). Citations made with `knitcitations` (<span class="showtooltip" title="Boettiger C (2014). knitcitations: Citations for knitr markdown files. R package version 0.5-0.  </p>"><a href="http://CRAN.R-project.org/package=knitcitations">Boettiger, 2014</a></span>). 
 
 
 
 - Carl Boettiger,   (2014) knitcitations: Citations for knitr markdown files.  [http://CRAN.R-project.org/package=knitcitations](http://CRAN.R-project.org/package=knitcitations)
 - Ramnath Vaidyanathan,   (2012) slidify: Generate reproducible html5 slides from R markdown.  [http://ramnathv.github.com/slidify/](http://ramnathv.github.com/slidify/)
-
 
 
 
@@ -87,7 +81,10 @@ data <- reservations[complete.cases(reservations$TA),
 data <- subset(data, Student != "Calendar fix" & !Description %in% 
     c("Therri will not hold office hours this day.", 
         "Leo will not hold office hours this day.", 
-        "Meeting with department chair"))
+        "Meeting with department chair", "not available at this time today", 
+        "Therri will not hold office hours at this time.", 
+        "Will not be available to meet with students on Monday at this time.", 
+        "Leo will be out of town"))
 
 ## Anonymize TAs
 data$TA <- factor(data$TA)
@@ -98,7 +95,8 @@ data$dDay <- as.Date(data$desiredDate, format = "%d-%m-%Y")
 
 ## Summarise the data to get the number of sessions
 ## per day on a given day
-sum <- summarise(group_by(data, dDay, TA), number = n())
+sum <- summarise(group_by(data[, -c(8, 11, 12)], dDay, 
+    TA), number = n())
 ## Calculate the week number (base 1). Used
 ## http://stackoverflow.com/questions/15278128/calculate-the-week-number-0-53-in-year-with-r
 sum$weeknum <- as.numeric(format(sum$dDay + 6, "%U"))
@@ -130,9 +128,7 @@ ggplot(byweek, aes(x = weeknum, y = number)) + geom_point() +
     ylab("Number of TA sessions") + scale_y_continuous(breaks = seq(0, 
     max(byweek$number) + 1, by = 1), limits = c(0, 
     max(byweek$number) + 1))
-
 ```
-
 
 ## Reproducibility
 
@@ -140,15 +136,14 @@ This report was last updated on
 
 
 ```
-## [1] "2014-03-26 15:53:14 EDT"
+## [1] "2014-05-24 10:40:28 EDT"
 ```
-
 
 R session information:
 
 
 ```
-## R version 3.0.2 (2013-09-25)
+## R version 3.1.0 (2014-04-10)
 ## Platform: x86_64-apple-darwin10.8.0 (64-bit)
 ## 
 ## locale:
@@ -158,21 +153,18 @@ R session information:
 ## [1] stats     graphics  grDevices utils     datasets  methods   base     
 ## 
 ## other attached packages:
-## [1] dplyr_0.1.1         ggplot2_0.9.3.1     knitcitations_0.5-0
-## [4] bibtex_0.3-6        knitr_1.5           slidify_0.4        
+## [1] knitcitations_0.5-0 bibtex_0.3-6        knitr_1.5.35       
+## [4] slidify_0.4         dplyr_0.2           ggplot2_1.0.0      
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] assertthat_0.1     codetools_0.2-8    colorspace_1.2-4  
-##  [4] dichromat_2.0-0    digest_0.6.4       evaluate_0.5.1    
-##  [7] formatR_0.10       grid_3.0.2         gtable_0.1.2      
-## [10] httr_0.2           labeling_0.2       markdown_0.6.4    
-## [13] MASS_7.3-29        munsell_0.4.2      plyr_1.8          
-## [16] proto_0.3-10       RColorBrewer_1.0-5 Rcpp_0.11.0       
-## [19] RCurl_1.95-4.1     reshape2_1.2.2     scales_0.2.3      
-## [22] stringr_0.6.2      tools_3.0.2        whisker_0.3-2     
-## [25] XML_3.95-0.2       xtable_1.7-1       yaml_2.1.10
+##  [1] assertthat_0.1   codetools_0.2-8  colorspace_1.2-4 digest_0.6.4    
+##  [5] evaluate_0.5.5   formatR_0.10.4   grid_3.1.0       gtable_0.1.2    
+##  [9] httr_0.3         labeling_0.2     markdown_0.7     MASS_7.3-33     
+## [13] munsell_0.4.2    parallel_3.1.0   plyr_1.8.1       proto_0.3-10    
+## [17] Rcpp_0.11.1      RCurl_1.95-4.1   reshape2_1.4     scales_0.2.4    
+## [21] stringr_0.6.2    tools_3.1.0      whisker_0.3-2    XML_3.98-1.1    
+## [25] xtable_1.7-3     yaml_2.1.11
 ```
-
 
 Generate report:
 
@@ -182,7 +174,6 @@ library("slidify")
 system("rm -fr .cache")
 slidify("index.Rmd")
 ```
-
 
 
 <div id='disqus_thread'></div>

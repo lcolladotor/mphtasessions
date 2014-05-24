@@ -41,7 +41,12 @@
 </header>
 
       <section>
-        <h2>Intro</h2>
+        
+<pre><code>## Loading required package: knitr
+</code></pre>
+
+<h2>Intro</h2>
+
 <p>This is a quick report on the number of sessions (each 30 min long) with 2014 MPH capstone project TAs. Reservations are made using <a href="http://glimmer.rstudio.com/lcolladotor/MPHcapstoneTA/">http://glimmer.rstudio.com/lcolladotor/MPHcapstoneTA/</a> and can be cancelled with up to 24hrs notice. They can only be made up to a week before the actual meeting day. Furthermore, a student can only have one <strong>active</strong> reservation at a time. That is, a reservation for any session on the following 7 days. Finally, each TA offers 8 slots per week for students to sign up and the TA schedule is available under the <strong>TA info</strong> tab on the <a href="http://glimmer.rstudio.com/lcolladotor/MPHcapstoneTA/">site</a>. It is also dynamically changed when a student selects a day of the week in the <a href="http://glimmer.rstudio.com/lcolladotor/MPHcapstoneTA/">site</a> thus allowing the student to choose among the TAs that have sessions on the day the student is free.</p>
 
 <h2>By day of the year</h2>
@@ -52,25 +57,25 @@
 
 <h2>By TA and week number</h2>
 
-<p>Because each TA offers sessions during different weekdays, we can also look at the data per week of the year as shown below. For now the clear outlier is that TA <strong>C</strong> had a full week 9 with 8 slots used out of the 8 available. If you are a student, remember that there are plenty of other highly capable TAs available! It could also be that TA <strong>C</strong> chose the hours that are the most convenient for students. TA <strong>F</strong> has been quite busy as of late as well.</p>
+<p>Because each TA offers sessions during different weekdays, we can also look at the data per week of the year as shown below. TA <strong>C</strong> had 4 full weeks with 8 slots used out of the 8 available. If you are a student, remember that there are plenty of other highly capable TAs available! It could also be that TA <strong>C</strong> chose the hours that are the most convenient for students. TA <strong>F</strong> has was quite busy as well followed by TA <strong>B</strong>.</p>
 
 <p><img src="assets/fig/fig2.png" alt="plot of chunk fig2"> </p>
 
 <h2>By day of the week</h2>
 
-<p>We can also explore the data to check which day of the week is has been the most busy so far. The next figure shows the number of TA sessions broken up by weekday. Wednesday is winning by a landslide so far. Although Mondays look pretty busy too.</p>
+<p>We can also explore the data to check which day of the week is has been the most busy so far. The next figure shows the number of TA sessions broken up by weekday. Wednesday and Monday were the most popular options.</p>
 
 <p><img src="assets/fig/fig3.png" alt="plot of chunk fig3"> </p>
 
 <h2>By week</h2>
 
-<p>Finally, we can check if the overall number of TA sessions has changed as the term has progressed. Beyond the dip in week 7, the number of sessions seems quite stable per week until week 8. This might change in the upcoming weeks as the deadline for the capstone project gets closer as we can see on weeks 9 and 10. Week 11 might have been less busy because it was finals week and just before spring break. Week 13 (1st one for term 4) is just beginning and has broken all the records so far!</p>
+<p>Finally, we can check if the overall number of TA sessions has changed as the term has progressed. We can see that weeks 13 to 17 were the most intense ones.</p>
 
 <p><img src="assets/fig/fig4.png" alt="plot of chunk fig4"> </p>
 
 <h2>References</h2>
 
-<p>Web document generated using <code>slidify</code> (<span class="showtooltip" title="Vaidyanathan R (2012). slidify: Generate reproducible html5 slides from R markdown. R package version 0.4."><a href="http://ramnathv.github.com/slidify/">Vaidyanathan, 2012</a></span>). Citations made with <code>knitcitations</code> (<span class="showtooltip" title="Boettiger C (2014). knitcitations: Citations for knitr markdown files. R package version 0.5-0."><a href="http://CRAN.R-project.org/package=knitcitations">Boettiger, 2014</a></span>). </p>
+<p>Web document generated using <code>slidify</code> (<span class="showtooltip" title="Vaidyanathan R (2012). slidify: Generate reproducible html5 slides from R markdown. R package version 0.4.  </p>&quot;&gt;<a href="http://ramnathv.github.com/slidify/">Vaidyanathan, 2012</a></span>). Citations made with <code>knitcitations</code> (<span class="showtooltip" title="Boettiger C (2014). knitcitations: Citations for knitr markdown files. R package version 0.5-0.  </p>&quot;&gt;<a href="http://CRAN.R-project.org/package=knitcitations">Boettiger, 2014</a></span>). </p>
 
 <ul>
 <li>Carl Boettiger,   (2014) knitcitations: Citations for knitr markdown files.  <a href="http://CRAN.R-project.org/package=knitcitations">http://CRAN.R-project.org/package=knitcitations</a></li>
@@ -90,7 +95,10 @@ data &lt;- reservations[complete.cases(reservations$TA),
 data &lt;- subset(data, Student != &quot;Calendar fix&quot; &amp; !Description %in% 
     c(&quot;Therri will not hold office hours this day.&quot;, 
         &quot;Leo will not hold office hours this day.&quot;, 
-        &quot;Meeting with department chair&quot;))
+        &quot;Meeting with department chair&quot;, &quot;not available at this time today&quot;, 
+        &quot;Therri will not hold office hours at this time.&quot;, 
+        &quot;Will not be available to meet with students on Monday at this time.&quot;, 
+        &quot;Leo will be out of town&quot;))
 
 ## Anonymize TAs
 data$TA &lt;- factor(data$TA)
@@ -101,7 +109,8 @@ data$dDay &lt;- as.Date(data$desiredDate, format = &quot;%d-%m-%Y&quot;)
 
 ## Summarise the data to get the number of sessions
 ## per day on a given day
-sum &lt;- summarise(group_by(data, dDay, TA), number = n())
+sum &lt;- summarise(group_by(data[, -c(8, 11, 12)], dDay, 
+    TA), number = n())
 ## Calculate the week number (base 1). Used
 ## http://stackoverflow.com/questions/15278128/calculate-the-week-number-0-53-in-year-with-r
 sum$weeknum &lt;- as.numeric(format(sum$dDay + 6, &quot;%U&quot;))
@@ -133,19 +142,18 @@ ggplot(byweek, aes(x = weeknum, y = number)) + geom_point() +
     ylab(&quot;Number of TA sessions&quot;) + scale_y_continuous(breaks = seq(0, 
     max(byweek$number) + 1, by = 1), limits = c(0, 
     max(byweek$number) + 1))
-
 </code></pre>
 
 <h2>Reproducibility</h2>
 
 <p>This report was last updated on</p>
 
-<pre><code>## [1] &quot;2014-03-26 15:53:14 EDT&quot;
+<pre><code>## [1] &quot;2014-05-24 10:40:28 EDT&quot;
 </code></pre>
 
 <p>R session information:</p>
 
-<pre><code>## R version 3.0.2 (2013-09-25)
+<pre><code>## R version 3.1.0 (2014-04-10)
 ## Platform: x86_64-apple-darwin10.8.0 (64-bit)
 ## 
 ## locale:
@@ -155,19 +163,17 @@ ggplot(byweek, aes(x = weeknum, y = number)) + geom_point() +
 ## [1] stats     graphics  grDevices utils     datasets  methods   base     
 ## 
 ## other attached packages:
-## [1] dplyr_0.1.1         ggplot2_0.9.3.1     knitcitations_0.5-0
-## [4] bibtex_0.3-6        knitr_1.5           slidify_0.4        
+## [1] knitcitations_0.5-0 bibtex_0.3-6        knitr_1.5.35       
+## [4] slidify_0.4         dplyr_0.2           ggplot2_1.0.0      
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] assertthat_0.1     codetools_0.2-8    colorspace_1.2-4  
-##  [4] dichromat_2.0-0    digest_0.6.4       evaluate_0.5.1    
-##  [7] formatR_0.10       grid_3.0.2         gtable_0.1.2      
-## [10] httr_0.2           labeling_0.2       markdown_0.6.4    
-## [13] MASS_7.3-29        munsell_0.4.2      plyr_1.8          
-## [16] proto_0.3-10       RColorBrewer_1.0-5 Rcpp_0.11.0       
-## [19] RCurl_1.95-4.1     reshape2_1.2.2     scales_0.2.3      
-## [22] stringr_0.6.2      tools_3.0.2        whisker_0.3-2     
-## [25] XML_3.95-0.2       xtable_1.7-1       yaml_2.1.10
+##  [1] assertthat_0.1   codetools_0.2-8  colorspace_1.2-4 digest_0.6.4    
+##  [5] evaluate_0.5.5   formatR_0.10.4   grid_3.1.0       gtable_0.1.2    
+##  [9] httr_0.3         labeling_0.2     markdown_0.7     MASS_7.3-33     
+## [13] munsell_0.4.2    parallel_3.1.0   plyr_1.8.1       proto_0.3-10    
+## [17] Rcpp_0.11.1      RCurl_1.95-4.1   reshape2_1.4     scales_0.2.4    
+## [21] stringr_0.6.2    tools_3.1.0      whisker_0.3-2    XML_3.98-1.1    
+## [25] xtable_1.7-3     yaml_2.1.11
 </code></pre>
 
 <p>Generate report:</p>
